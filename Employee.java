@@ -2,24 +2,26 @@ package carDealership;
 
 import java.io.IOException;
 import java.nio.file.Path;
-// Assignment: 5
-// Author: Or Adar, ID: 305468506
+
+// Author: Or Adar
+
 /**
- * The Employee class represents an employee with their attributes and behaviors.
- * It implements the Comparable interface to enable comparison between employees based on their number of sales.
+ * The Employee class represents an employee at the car dealership.
+ * It tracks their personal details and performance metrics.
+ * Implements Comparable to allow sorting employees based on sales.
  */
 public class Employee implements Comparable<Employee> {
-    private String name;
-    private String ID;
-    private int numberSales;
+    private String name; // Employee's full name (only letters allowed)
+    private String ID; // Unique 9-digit employee ID
+    private int numberSales; // Number of cars sold by the employee
 
     /**
      * Constructs an Employee object with the specified attributes.
      *
-     * @param name        the employee's name
-     * @param ID          the employee's ID
-     * @param numberSales the number of sales made by the employee
-     * @throws Exception if any of the attributes are invalid
+     * @param name        The employee's name (letters only)
+     * @param ID          The employee's unique 9-digit ID
+     * @param numberSales Number of sales attributed to the employee (must be non-negative)
+     * @throws Exception If any input validation fails.
      */
     public Employee(String name, String ID, int numberSales) throws Exception {
         setName(name);
@@ -30,7 +32,7 @@ public class Employee implements Comparable<Employee> {
     /**
      * Retrieves the employee's name.
      *
-     * @return the employee's name
+     * @return The employee's name.
      */
     public String getName() {
         return name;
@@ -39,8 +41,8 @@ public class Employee implements Comparable<Employee> {
     /**
      * Sets the employee's name.
      *
-     * @param name the employee's name
-     * @throws Exception if the name is invalid
+     * @param name The employee's name (must contain only letters)
+     * @throws Exception If the name contains invalid characters.
      */
     public void setName(String name) throws Exception {
         if (!name.matches("[a-zA-Z]+"))
@@ -51,7 +53,7 @@ public class Employee implements Comparable<Employee> {
     /**
      * Retrieves the employee's ID.
      *
-     * @return the employee's ID
+     * @return The employee's unique ID.
      */
     public String getID() {
         return ID;
@@ -60,23 +62,21 @@ public class Employee implements Comparable<Employee> {
     /**
      * Sets the employee's ID.
      *
-     * @param ID the employee's ID
-     * @throws Exception if the ID is invalid
+     * @param ID The unique 9-digit identifier for the employee.
+     * @throws Exception If the ID is not exactly 9 numeric characters.
      */
     public void setID(String ID) throws Exception {
-        if (!ID.matches("[0-9]+"))
-            throw new Exception("ID must have numbers only.");
-        if (ID.length() != 9)
-            throw new Exception("ID must be exactly 9 digits long.");
+        if (!ID.matches("\\d{9}"))
+            throw new Exception("ID must be exactly 9 digits.");
         this.ID = ID;
     }
 
     /**
-     * Performs a car sale for the employee and updates the number of sales.
+     * Records a car sale and increments the employee's sales count.
      *
-     * @param car  the car being sold
-     * @param path the path to the file
-     * @throws IOException if an I/O error occurs
+     * @param car  The car being sold.
+     * @param path The file path where sales are logged.
+     * @throws IOException If an I/O error occurs.
      */
     public void carSale(Car car, Path path) throws IOException {
         car.carSale(path);
@@ -84,9 +84,9 @@ public class Employee implements Comparable<Employee> {
     }
 
     /**
-     * Calculates the salary of the employee based on the number of sales.
+     * Calculates the employee's salary based on the number of sales.
      *
-     * @return the salary of the employee
+     * @return The employee's calculated salary.
      */
     public int salary() {
         return 6000 + numberSales * 100;
@@ -95,28 +95,28 @@ public class Employee implements Comparable<Employee> {
     /**
      * Retrieves the number of sales made by the employee.
      *
-     * @return the number of sales
+     * @return The number of sales.
      */
     public int getNumberSales() {
         return numberSales;
     }
 
     /**
-     * Sets the number of sales made by the employee.
+     * Sets the number of sales.
      *
-     * @param numberSales the number of sales
-     * @throws Exception if the number of sales is invalid
+     * @param numberSales The number of sales made (must be non-negative)
+     * @throws Exception If the number is negative.
      */
     public void setNumberSales(int numberSales) throws Exception {
         if (numberSales < 0)
-            throw new Exception("Number must be positive.");
+            throw new Exception("Number of sales must be a non-negative integer.");
         this.numberSales = numberSales;
     }
 
     /**
-     * Returns a string representation of the employee.
+     * Returns a formatted string representation of the employee.
      *
-     * @return a string representation of the employee
+     * @return A string with employee details.
      */
     @Override
     public String toString() {
@@ -124,10 +124,10 @@ public class Employee implements Comparable<Employee> {
     }
 
     /**
-     * Checks if the given object is equal to the current employee.
+     * Checks if two Employee objects are equal based on their attributes.
      *
-     * @param obj the object to compare
-     * @return true if the objects are equal, false otherwise
+     * @param obj The object to compare.
+     * @return True if all attributes match, false otherwise.
      */
     @Override
     public boolean equals(Object obj) {
@@ -139,18 +139,14 @@ public class Employee implements Comparable<Employee> {
     }
 
     /**
-     * Compares the current employee to another employee based on their number of sales.
+     * Compares two Employee objects based on their number of sales.
      *
-     * @param other the other employee to compare
-     * @return a negative integer if the current employee has fewer sales, zero if they have the same number of sales,
-     * or a positive integer if the current employee has more sales
+     * @param other The employee to compare to.
+     * @return A negative integer if this employee has fewer sales, zero if equal, or a positive integer if greater.
      */
     @Override
     public int compareTo(Employee other) {
-        if (numberSales == other.numberSales)
-            return 0;
-        if (numberSales < other.numberSales)
-            return -1;
-        return 1;
+        return Integer.compare(this.numberSales, other.numberSales);
     }
 }
+
