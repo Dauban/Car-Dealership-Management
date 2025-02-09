@@ -1,5 +1,5 @@
 package carDealership;
-// Author: Or Adar, ID: 305468506
+// Author: Or Adar
 
 import java.io.IOException;
 import java.nio.file.Files;
