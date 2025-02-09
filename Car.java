@@ -1,187 +1,132 @@
 package carDealership;
-// Assignment: 5
-// Author: Or Adar, ID: 305468506
+// Author: Or Adar
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+
 /**
- * The Car class represents a car with its attributes and behaviors.
+ * The Car class encapsulates vehicle-related attributes and behaviors.
+ * This class ensures data integrity through validation in setter methods.
  */
 public class Car {
-    private String carID;
-    private int manuYear;
-    private String manuName;
-    private int km;
-    private int price;
+    private String carID; // Unique identifier for the car (6-digit format)
+    private int manuYear; // Manufacturing year (restricted range: 2017-2023)
+    private String manuName; // Manufacturer name (alphabetic only)
+    private int km; // Car's mileage (non-negative)
+    private int price; // Car's price (non-negative)
+
     /**
-     * Constructs a Car object with the specified attributes.
+     * Constructs a Car object with the given parameters.
      *
-     * @param carID     the car's ID
-     * @param manuYear  the manufacturing year of the car
-     * @param manuName  the manufacturer's name
-     * @param km        the car's mileage
-     * @param price     the price of the car
-     * @throws Exception if any of the attributes are invalid
+     * @param carID     Unique 6-digit car identifier
+     * @param manuYear  Manufacturing year (2017-2023 enforced)
+     * @param manuName  Manufacturer's name (alphabetic validation)
+     * @param km        Mileage (must be non-negative)
+     * @param price     Price of the car (must be non-negative)
+     * @throws Exception If any parameter fails validation.
      */
-    public Car(String carID,int manuYear,String manuName,int km,int price) throws Exception {
+    public Car(String carID, int manuYear, String manuName, int km, int price) throws Exception {
         setCarID(carID);
         setManuYear(manuYear);
         setManuName(manuName);
         setKm(km);
         setPrice(price);
     }
+
     /**
-     * Calculates the value of the car after applying a discount.
+     * Reduces the price of the car by applying a discount.
      *
-     * @param percent the discount percentage
-     * @throws Exception if the discount percentage is invalid
+     * @param percent Discount percentage (must be positive and not exceed 5000 in value)
+     * @throws Exception If discount constraints are violated.
      */
-    public void carValue(int precent)throws Exception{
-        int discount=price*precent/100;
-        if(precent<0)
-            throw new Exception("Precent must be a positive number.");
-        if(discount>5000)
+    public void carValue(int percent) throws Exception {
+        if (percent < 0)
+            throw new Exception("Percent must be a positive number.");
+        int discount = price * percent / 100;
+        if (discount > 5000)
             throw new Exception("Discount cannot be more than 5000.");
-        price-=discount;
+        price -= discount;
     }
+
     /**
-     * Performs a car sale and appends the car's details to a file.
+     * Logs the sale of the car by appending its details to a specified file.
      *
-     * @param path the path to the file
-     * @throws IOException if an I/O error occurs
+     * @param path File path where sale records are stored.
+     * @throws IOException If an error occurs during file writing.
      */
     public void carSale(Path path) throws IOException {
-        Files.writeString(path,toString(), StandardOpenOption.APPEND);
+        Files.writeString(path, toString() + "\n", StandardOpenOption.APPEND);
     }
-    /**
-     * Retrieves the car's ID.
-     *
-     * @return the car's ID
-     */
-    public String getCarID() {
-        return carID;
-    }
-    /**
-     * Sets the car's ID.
-     *
-     * @param carID the car's ID
-     * @throws Exception if the car ID is invalid
-     */
-    public void setCarID(String carID)throws Exception {
-        if(carID.length()!=6){
-            throw new Exception("Car ID must be 6 digits long.");
-        }
-        try{
-            int x=Integer.parseInt(carID);
-            if(x<0)
-                throw new Exception("Number must be positive.");
-        }
-        catch(NumberFormatException e){
-            throw new NumberFormatException("Car ID must be digits only.");
-        }
+
+    /** Getters and Setters with Validation */
+    
+    public String getCarID() { return carID; }
+    
+    public void setCarID(String carID) throws Exception {
+        if (carID.length() != 6 || !carID.matches("\\d{6}"))
+            throw new Exception("Car ID must be exactly 6 digits.");
         this.carID = carID;
     }
-    /**
-     * Retrieves the manufacturing year of the car.
-     *
-     * @return the manufacturing year of the car
-     */
-    public int getManuYear() {
-        return manuYear;
-    }
-    /**
-     * Sets the manufacturing year of the car.
-     *
-     * @param manuYear the manufacturing year of the car
-     * @throws Exception if the manufacturing year is invalid
-     */
-    public void setManuYear(int manuYear)throws Exception {
-        if(manuYear<2017)
-            throw new Exception("Manufactured year must be after 2017.");
-        if(manuYear>2023)
-            throw new Exception("Time travel is not allowed.");
+    
+    public int getManuYear() { return manuYear; }
+    
+    public void setManuYear(int manuYear) throws Exception {
+        if (manuYear < 2017 || manuYear > 2023)
+            throw new Exception("Manufacturing year must be between 2017 and 2023.");
         this.manuYear = manuYear;
     }
-    /**
-     * Retrieves the manufacturer's name.
-     *
-     * @return the manufacturer's name
-     */
-    public String getManuName() {
-        return manuName;
-    }
-    /**
-     * Sets the manufacturer's name.
-     *
-     * @param manuName the manufacturer's name
-     * @throws Exception if the manufacturer's name is invalid
-     */
-    public void setManuName(String manuName)throws Exception {
-        if(!manuName.matches("[a-z,A-Z]+"))
-            throw new Exception("Name must include letters.");
+    
+    public String getManuName() { return manuName; }
+    
+    public void setManuName(String manuName) throws Exception {
+        if (!manuName.matches("[a-zA-Z]+"))
+            throw new Exception("Manufacturer name must contain only letters.");
         this.manuName = manuName;
     }
-    /**
-     * Retrieves the car's mileage.
-     *
-     * @return the car's mileage
-     */
-    public int getKm() {
-        return km;
-    }
-    /**
-     * Sets the car's mileage.
-     *
-     * @param km the car's mileage
-     * @throws Exception if the mileage is invalid
-     */
-    public void setKm(int km) throws Exception{
-        if(km<0)
-            throw new Exception("KM must be a positive number.");
+    
+    public int getKm() { return km; }
+    
+    public void setKm(int km) throws Exception {
+        if (km < 0)
+            throw new Exception("Mileage must be a non-negative number.");
         this.km = km;
     }
-    /**
-     * Retrieves the price of the car.
-     *
-     * @return the price of the car
-     */
-    public int getPrice() {
-        return price;
-    }
-    /**
-     * Sets the price of the car.
-     *
-     * @param price the price of the car
-     * @throws Exception if the price is invalid
-     */
-    public void setPrice(int price)throws Exception {
-        if(price<0)
-            throw new Exception("Price must be positive.");
+    
+    public int getPrice() { return price; }
+    
+    public void setPrice(int price) throws Exception {
+        if (price < 0)
+            throw new Exception("Price must be a non-negative value.");
         this.price = price;
     }
+    
     /**
-     * Returns a string representation of the car.
+     * Returns a formatted string representation of the car.
      *
-     * @return a string representation of the car
+     * @return String containing car details.
      */
     @Override
-    public String toString(){
-        return carID+" "+manuYear+" "+manuName+" "+km+" "+price;
+    public String toString() {
+        return carID + " " + manuYear + " " + manuName + " " + km + " " + price;
     }
+
     /**
-     * Checks if the given object is equal to the current car.
+     * Compares two Car objects for equality based on their attributes.
      *
-     * @param obj the object to compare
-     * @return true if the objects are equal, false otherwise
+     * @param obj Object to compare against.
+     * @return True if all attributes match, false otherwise.
      */
     @Override
-    public boolean equals(Object O){
-        if(this==O)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if(!(O instanceof Car car))
+        if (!(obj instanceof Car car))
             return false;
-        return carID.equals(car.getCarID())&&manuYear==(car.getManuYear())&&getManuName().equals(car.manuName)&&
-                km==(car.getKm())&&price==(car.getPrice());
+        return carID.equals(car.getCarID()) && manuYear == car.getManuYear() &&
+               manuName.equals(car.getManuName()) && km == car.getKm() &&
+               price == car.getPrice();
     }
 }
+
