@@ -1,6 +1,5 @@
 package carDealership;
-// Assignment: 5
-// Author: Or Adar, ID: 305468506
+// Author: Or Adar
 /**
  * The Menu enum represents the available options in the program's menu.
  */
