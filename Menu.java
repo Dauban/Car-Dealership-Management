@@ -1,23 +1,27 @@
-package carDealership;
-// Author: Or Adar
+package doublyLinkedList;
+// Assignment: 5
+// Author: Or Adar, ID: 305468506
 /**
- * The Menu enum represents the available options in the program's menu.
+ * The Menu enum represents a set of menu options for a DoublyLinkedList.
  */
 public enum Menu {
-    SHOWEMPLOYEELIST,
-    UNSOLDCARS,
-    CARSALE,
-    ADDACAR,
-    ENDPROGRAM;
+    ISEMPTY,
+    SIZE,
+    ADDFIRST,
+    ADDLAST,
+    REMOVE,
+    CLEAR,
+    CONTAINS,
+    PRINTFORWARD,
+    PRINTBACKWARD;
 
     /**
-     * Prints the menu options to the console.
+     * Prints the menu options.
      */
     public static void printMenu() {
-        System.out.println("Menu:");
-        for (Menu choice : Menu.values()) {
-            System.out.println(choice.ordinal() + 1 + ": " + choice);
+        System.out.println("Choose the method you want to apply:");
+        for (Menu method : Menu.values()) {
+            System.out.println(method.ordinal() + ": " + method);
         }
     }
 }
-
